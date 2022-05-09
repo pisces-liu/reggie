@@ -92,14 +92,14 @@ public class EmployeeController {
         // 设置初始密码 123456，需要进行 md5 加密处理
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
 
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setCreateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 获取当前登录用户的 id
-        Long empId = (Long) request.getSession().getAttribute("employee");
+        // Long empId = (Long) request.getSession().getAttribute("employee");
 
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+        // employee.setCreateUser(empId);
+        // employee.setUpdateUser(empId);
 
         employeeService.save(employee); // 使用 myBatisPlus 中提供的 save 方法
 
@@ -150,11 +150,14 @@ public class EmployeeController {
     public R<String> update(HttpServletRequest request, @RequestBody Employee employee) {
         log.info(employee.toString());
 
+        /*
+         * 已经设置了公共字段自动插入
+         * */
         // 由于 mybatis plus 生成 id 使用的是雪花算法，所以需要使用 long 强制转换类型
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(empId);
-        employeeService.updateById(employee);
+        // Long empId = (Long) request.getSession().getAttribute("employee");
+        //employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateUser(empId);
+        //employeeService.updateById(employee);
 
         return R.success("员工信息修改成功！");
 

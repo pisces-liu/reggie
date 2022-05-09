@@ -39,4 +39,19 @@ public class GlobalExceptionHandler {
         }
         return R.error("未知错误");
     }
+
+    /*
+     * @Author LiuLiu
+     * @Date 2022/5/7 8:45
+     * @Description 处理异常方法
+     * @Param
+     * @Return
+     * @Since version-1.0
+     */
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException exception) {
+        log.error(exception.getMessage());
+
+        return R.error(exception.getMessage());
+    }
 }
