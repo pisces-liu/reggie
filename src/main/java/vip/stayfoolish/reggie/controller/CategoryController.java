@@ -1,6 +1,7 @@
 package vip.stayfoolish.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import vip.stayfoolish.reggie.common.R;
 import vip.stayfoolish.reggie.entity.Category;
 import vip.stayfoolish.reggie.service.CategoryService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -90,6 +93,29 @@ public class CategoryController {
         categoryService.updateById(category);
 
         return R.success("修改分类信息成功！");
+    }
+
+
+    /*
+     * @Author LiuLiu
+     * @Date 2022/5/18 15:11
+     * @Description 当进入菜品管理页面，点击新增菜品信息的时候，回显分类列表
+     * @Param
+     * @Return
+     * @Since version-1.0
+     */
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category) {
+        // 条件构造器
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        // 添加条件，1.类型不能为空
+        queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
+        // 添加排序条件 通过分类类型升序排序，通过更新时间降序排序
+        queryWrapper.orderByAsc(Category::getType).orderByDesc(Category::getUpdateTime);
+
+        List<Category> list = categoryService.list(queryWrapper);
+
+        return R.success(list);
     }
 
 
